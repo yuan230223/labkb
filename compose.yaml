@@ -1,0 +1,26 @@
+services:
+  labkb:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      LABKB_MODE: ${LABKB_MODE:-demo}
+      LABKB_DATA_DIR: /app/data
+      LABKB_API_TOKEN: ${LABKB_API_TOKEN:?Set a random LABKB_API_TOKEN of at least 24 characters in .env}
+      LABKB_OLLAMA_URL: http://host.docker.internal:11434
+      LABKB_CHAT_MODEL: ${LABKB_CHAT_MODEL:-qwen3:8b}
+      LABKB_EMBED_MODEL: ${LABKB_EMBED_MODEL:-qwen3-embedding:0.6b}
+      LABKB_NUM_CTX: ${LABKB_NUM_CTX:-8192}
+      LABKB_SEMANTIC_THRESHOLD: ${LABKB_SEMANTIC_THRESHOLD:-0.55}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - labkb_data:/app/data
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+volumes:
+  labkb_data:
