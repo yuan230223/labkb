@@ -1,0 +1,6 @@
+{"id":"onboarding","question":"新人加入课题组后，第一周应该做什么？","expected_documents":["新生入组指南.md"],"expect_refusal":false}
+{"id":"naming","question":"实验数据需要如何命名？","expected_documents":["数据与仪器管理.md"],"expect_refusal":false}
+{"id":"backup","question":"实验数据如何备份？","expected_documents":["数据与仪器管理.md"],"expect_refusal":false}
+{"id":"booking","question":"如何预约实验室仪器？","expected_documents":["数据与仪器管理.md"],"expect_refusal":false}
+{"id":"unknown","question":"火星殖民地有多少人口？","expected_documents":[],"expect_refusal":true}
+{"id":"missing-detail","question":"组会周几几点在哪里召开？","expected_documents":[],"expect_refusal":true}
