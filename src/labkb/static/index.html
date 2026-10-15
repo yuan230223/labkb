@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#123f3b">
+  <meta name="description" content="研知 LabKB，本地部署的实验室知识库。上传资料，检索证据，带着出处回答问题。">
+  <title>研知 LabKB · 实验室知识库</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#question">跳转到提问</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="知识库与连接设置">
+      <a class="brand" href="/" aria-label="研知 LabKB 首页">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><strong>研知 <span>LabKB</span></strong><small>让实验室的经验，持续积累。</small></span>
+      </a>
+
+      <div class="sidebar-section-label">WORKSPACE <span>01</span></div>
+      <div class="workspace-nav"><span class="nav-symbol" aria-hidden="true">◈</span><span>实验室知识库</span><span class="nav-dot" aria-hidden="true"></span></div>
+
+      <section class="library" aria-labelledby="library-title">
+        <div class="section-heading"><h2 id="library-title">知识资料</h2><span id="document-count" class="count-badge">0</span></div>
+        <p class="sidebar-description">把组内文档放在一起，让每次提问都有依据。</p>
+        <div id="upload-zone" class="upload-zone">
+          <span class="upload-symbol" aria-hidden="true">↑</span>
+          <button id="upload-button" class="upload-button" type="button">上传资料</button>
+          <span>或将单个文件拖到这里</span>
+          <small>TXT · Markdown · PDF · DOCX</small>
+          <input id="document-file" type="file" accept=".txt,.md,.pdf,.docx" hidden aria-label="选择知识库文档">
+        </div>
+        <p id="upload-progress" class="upload-progress" role="status" hidden></p>
+        <ul id="document-list" class="document-list" aria-label="已上传的文档"></ul>
+        <p id="documents-empty" class="documents-empty">还没有资料。上传一份文档，或先体验示例知识库。</p>
+        <button id="seed-button" class="seed-button" type="button" hidden><span aria-hidden="true">＋</span> 加载示例资料</button>
+      </section>
+
+      <div class="sidebar-bottom">
+        <details id="connection-settings" class="connection-settings">
+          <summary><span aria-hidden="true">⚙</span> 连接设置</summary>
+          <form id="token-form" class="token-form">
+            <label for="api-token">访问令牌（可选）</label>
+            <input id="api-token" type="password" autocomplete="off" spellcheck="false" placeholder="服务器设置了令牌时填写">
+            <p>仅保存在当前浏览器标签页的会话中。</p>
+            <button type="submit">保存并重新连接</button>
+          </form>
+        </details>
+        <div class="local-note"><span class="local-note-dot" aria-hidden="true"></span><div><strong>面向本地部署</strong><small>知识与模型，由实验室掌握</small></div></div>
+        <div class="sidebar-footer">LAB KNOWLEDGE BASE <span>开源框架</span></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="breadcrumbs">工作空间 <span aria-hidden="true">/</span> <strong>知识问答</strong></div>
+        <div id="connection-state" class="connection-state"><span class="connection-dot" aria-hidden="true"></span><span id="connection-label">正在连接</span></div>
+      </header>
+
+      <div class="workspace-content">
+        <section class="page-heading" aria-labelledby="page-title">
+          <div><div class="eyebrow">YOUR LAB, CONNECTED.</div><h1 id="page-title">让知识留在组里，<br class="mobile-break">让答案有据可查。</h1><p>从实验流程到新人指南，把散落的文档变成可追溯的问答。</p></div>
+          <div class="knowledge-stats" aria-label="知识库统计"><div><strong id="stat-documents">—</strong><span>份知识资料</span></div><span class="stat-divider" aria-hidden="true"></span><div><strong id="stat-chunks">—</strong><span>个检索片段</span></div></div>
+        </section>
+
+        <div id="mode-banner" class="mode-banner" role="status"><span class="mode-icon" aria-hidden="true">◎</span><div><strong id="mode-title">连接知识库服务</strong><span id="mode-description">正在读取运行模式与资料状态…</span></div><span id="mode-badge" class="mode-badge">CONNECTING</span></div>
+        <div id="notification" class="notification" role="alert" hidden></div>
+
+        <div class="content-grid">
+          <section class="chat-panel" aria-labelledby="chat-title">
+            <div class="panel-heading"><div><span class="panel-icon" aria-hidden="true">✳</span><h2 id="chat-title">和知识库聊一聊</h2></div><button id="clear-chat" class="text-button" type="button">清空对话</button></div>
+            <div id="conversation" class="conversation" role="log" aria-label="问答记录" aria-live="polite" aria-relevant="additions text">
+              <div id="welcome" class="welcome">
+                <div class="welcome-mark" aria-hidden="true">知<span>↗</span></div>
+                <h3>你好，今天想了解什么？</h3>
+                <p>试着问一个具体问题。我们会先检索知识库，<br>再把相关资料和出处一起交给你。</p>
+                <div class="question-chips" aria-label="示例问题">
+                  <button type="button" data-question="新人加入课题组后，第一周应该做什么？"><span aria-hidden="true">01</span> 新人入组，从哪里开始？<span aria-hidden="true">↗</span></button>
+                  <button type="button" data-question="实验数据需要如何命名和备份？"><span aria-hidden="true">02</span> 实验数据如何整理与备份？<span aria-hidden="true">↗</span></button>
+                  <button type="button" data-question="如何预约实验室仪器？"><span aria-hidden="true">03</span> 仪器预约有哪些流程？<span aria-hidden="true">↗</span></button>
+                </div>
+              </div>
+            </div>
+            <form id="chat-form" class="composer">
+              <label for="question" class="sr-only">向实验室知识库提问</label>
+              <div class="composer-input"><textarea id="question" rows="2" maxlength="800" placeholder="向知识库提问，例如：实验记录需要包含哪些内容？（最多 800 字符）"></textarea><button id="send-button" class="send-button" type="submit" aria-label="发送问题"><span aria-hidden="true">↑</span></button></div>
+              <div class="composer-footer"><span><span class="composer-dot" aria-hidden="true"></span> 回答基于已上传资料，请核对引用原文</span><span class="keyboard-hint">Enter 发送 · Shift + Enter 换行</span></div>
+            </form>
+          </section>
+
+          <aside class="insight-column" aria-label="引用和使用说明">
+            <section class="sources-panel" aria-labelledby="sources-title"><div class="small-panel-heading"><h2 id="sources-title">参考来源</h2><span id="source-count" class="light-count">0</span></div><div id="sources-list" class="sources-list"><div class="sources-empty"><span aria-hidden="true">▤</span><strong>答案从这里出发</strong><p>提问后，这里会展示命中的文档、位置与原文片段。</p></div></div></section>
+            <section class="guide-panel" aria-labelledby="guide-title"><span class="guide-label">HOW IT WORKS</span><h2 id="guide-title">从文档，到有依据的答案</h2><ol><li><span>1</span><div><strong>放入组内资料</strong><p>新人指南、实验流程、仪器说明</p></div></li><li><span>2</span><div><strong>用自然语言提问</strong><p>问题越具体，越容易找到相关内容</p></div></li><li><span>3</span><div><strong>对照原文，核实答案</strong><p>资料不足时，不把推测当成结论</p></div></li></ol><div class="guide-footnote">此框架用于辅助查阅。涉及实验操作时，仍需遵循组内规范。</div></section>
+            <div class="runtime-info"><span class="runtime-label">当前运行环境</span><strong id="runtime-model">正在读取…</strong><span id="runtime-embedding">—</span></div>
+          </aside>
+        </div>
+        <footer class="workspace-footer"><span>研知 LabKB</span><span>积累一次，让更多人少走一步弯路。</span></footer>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
